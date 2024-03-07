@@ -1,0 +1,6 @@
+# melos_managed_dependency_overrides: domain,ex_lints
+dependency_overrides:
+  domain:
+    path: ../domain
+  ex_lints:
+    path: ../ex_lints

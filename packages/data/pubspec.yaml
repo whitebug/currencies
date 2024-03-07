@@ -1,0 +1,29 @@
+name: data
+description: "A new Flutter project."
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  core:
+    path: ../core
+  dartz: ^0.10.1
+  dio: ^5.4.1
+  domain:
+    path: ../domain
+  flutter:
+    sdk: flutter
+  flutter_secure_storage: ^9.0.0
+  net:
+    path: ../net
+
+dev_dependencies:
+  ex_lints:
+    path: ../ex_lints
+  flutter_test:
+    sdk: flutter
+
+flutter:

@@ -1,0 +1,73 @@
+name: exchange
+
+packages:
+  - packages/**
+
+command:
+  bootstrap:
+    usePubspecOverrides: true
+
+scripts:
+  lint:all:
+    run: melos run analyze && melos run format
+    description: Run all static analysis checks.
+
+  lint:format:
+    run: |
+      melos exec \
+      --concurrency 1 \
+      -- \
+      dart format . \
+      --fix
+    description: Run `dart format` for all packages.
+
+  analyze:
+    run: |
+      melos exec -c 5 -- \
+        dart analyze . --fatal-infos
+    description: |
+      Run `dart analyze` in all packages.
+       - Note: you can also rely on your IDEs Dart Analysis / Issues window.
+
+  format:
+    run: |
+      dart pub global run flutter_plugin_tools format
+    description: |
+      Build a specific example app for Android.
+       - Requires `flutter_plugin_tools` (`dart pub global activate flutter_plugin_tools`).
+       - Requires `clang-format` (can be installed via Brew on macOS).
+       - Requires `swift-format` (can be installed via Brew on macOS).
+
+  build:all:
+    run: |
+      melos run build:example_ios_pub --no-select && \
+      melos run build:example_android_pub --no-select && \
+      melos run build:example_macos --no-select && \
+      melos bootstrap
+    description: Build all example apps.
+
+  test:all:
+    run: melos run test --no-select
+    description: Run tests in all packages.
+
+  test:
+    run: melos exec -c 1 --fail-fast -- \
+      flutter test --reporter expanded --coverage
+    description: Run tests in a specific package.
+    packageFilters:
+      dirExists:
+        - "test/"
+
+  build:runner:
+    description: Run the build:runner to generate sources for the project if package has build_runner dependency
+    run: melos exec -- dart run build_runner build --delete-conflicting-outputs
+    packageFilters:
+      dependsOn:
+        - "build_runner"
+
+  build:runner:watch:
+    description: Run the build:runner to generate sources for the project if package has build_runner dependency
+    run: melos exec -- dart run build_runner watch --delete-conflicting-outputs
+    packageFilters:
+      dependsOn:
+        - "build_runner"
